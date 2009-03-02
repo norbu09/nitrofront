@@ -10,12 +10,31 @@ main() -> #template { file="./wwwroot/onecolumn.html", bindings=[
 title() -> "list of links".
 headline() -> "List of links".
 
-body() ->
+get_data() -> 
     [Key,Value] = links:get_all(),
     io:format("DEBUG: ~s -> ~s~n",[Key, Value]),
-    #h3 { text="the links so far" },
-    #p{},
-    #label { text=Key },
-    #value { text=Value }.
+    [[{path, Key}, {dest, Value}, {postback, {data, 1}}]].
+
+get_map() -> [{path, pathLabel@text}, {dest, destLabel@text}, {postback, myButton@postback}].
+
+body() ->
+  Data = get_data(),
+  Map = get_map(),
+  #h3 { text="list of mappings" },
+  #table { class=tiny, rows=[
+    #tablerow { cells=[
+      #tableheader { text="Path" },
+      #tableheader { text="Destination" },
+      #tableheader { }
+    ]},
+    #bind { id=tableBinding, data=Data, map=Map, body=#tablerow { cells=[
+      #tablecell { id=pathLabel },
+      #tablecell { id=destLabel },
+      #tablecell { body=#button { id=myButton, text="Button" } }
+    ]}}
+  ]}.
+
+
+
 
 event(_) -> ok.
