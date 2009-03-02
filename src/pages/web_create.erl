@@ -11,18 +11,21 @@ title() -> "create a new mapping".
 headline() -> "Map a new path to a destination".
 
 body() -> [
+  #link {class=tiny, text="back to list", url="/web/index"},
   #p{},
   #label { text="Path: " },
-  #inplace_textbox { text="/new/path" },
+  #textbox { id=path, text="/new/path" },
   #label { text=" Destination: " },
-  #inplace_textbox { text="http://new.destinati.on/" },
+  #textbox { id=dest, text="http://new.destinati.on/" },
+  #p{},
   #button { text="save", postback=button_pressed }
 ].
 	
 event(button_pressed) -> 
-  wf:flash("record saved");
+  Path=wf:q(path),
+  Dest=wf:q(dest),
+  links:create_mapping(Path, Dest),
+  wf:flash(wf:f("record saved: ~s -> ~s",[Path,Dest]));
 
 event(_) -> ok.
 
-inplace_textbox_event(_Tag, Value) ->
-  Value.

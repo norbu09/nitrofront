@@ -11,3 +11,10 @@ get_all() ->
         _:_ -> {error, unknown}
     end.
 
+create_mapping(Path, Dest) ->
+    Doc = [
+        {<<"type">>,<<"redir">>},
+        {<<"path">>,list_to_binary(Path)},
+        {<<"destination">>,list_to_binary(Dest)}
+    ],
+    erlang_couchdb:create_document({"localhost", 5984}, "umleitung", Doc).
