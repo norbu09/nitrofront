@@ -21,18 +21,25 @@ body() ->
   Data = get_data(),
   Map = get_map(),
   #h3 { text="list of mappings" },
-  #table { class=tiny, rows=[
-    #tablerow { cells=[
-      #tableheader { text="Path" },
-      #tableheader { text="Destination" },
-      #tableheader { }
-    ]},
-    #bind { id=tableBinding, data=Data, map=Map, body=#tablerow { cells=[
-      #tablecell { id=pathLabel },
-      #tablecell { id=destLabel },
-      #tablecell { body=#button { id=myButton, text="delete" } }
-    ]}}
-  ]}.
+  Table1=[
+    #table { rows=[
+      #tablerow { cells=[
+        #tableheader { text="Path" },
+        #tableheader { text="Destination" },
+        #tableheader { }
+      ]},
+      #bind { id=tableBinding, data=Data, map=Map, body=#tablerow { cells=[
+        #tablecell { id=pathLabel },
+        #tablecell { id=destLabel },
+        #tablecell { body=#button { id=myButton, text="delete" } }
+      ]}}
+    ]}
+  ],
+  Links=[
+    #link { class=tiny, text="add new mapping", url="/create" }
+  ],
+  wf:render([Table1, Links]).
+
 
 
 event({data, Data}) ->
