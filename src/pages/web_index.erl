@@ -13,7 +13,7 @@ headline() -> "List of links".
 get_data() -> 
     [Key,Value] = links:get_all(),
     io:format("DEBUG: ~s -> ~s~n",[Key, Value]),
-    [[{path, Key}, {dest, Value}, {postback, {data, 1}}]].
+    [[{path, Key}, {dest, Value}, {postback, {data, Key}}]].
 
 get_map() -> [{path, pathLabel@text}, {dest, destLabel@text}, {postback, myButton@postback}].
 
@@ -30,11 +30,14 @@ body() ->
     #bind { id=tableBinding, data=Data, map=Map, body=#tablerow { cells=[
       #tablecell { id=pathLabel },
       #tablecell { id=destLabel },
-      #tablecell { body=#button { id=myButton, text="Button" } }
+      #tablecell { body=#button { id=myButton, text="delete" } }
     ]}}
   ]}.
 
 
-
+event({data, Data}) ->
+  Message = "removing: " ++ wf:to_list(Data),
+  wf:flash(Message),
+  ok;
 
 event(_) -> ok.
