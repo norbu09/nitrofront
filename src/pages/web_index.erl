@@ -36,7 +36,7 @@ body() ->
     ]}
   ],
   Links=[
-    #link { class=tiny, text="add new mapping", url="/create" }
+    #link { class=tiny, text="add new mapping", url="/web/create" }
   ],
   wf:render([Table1, Links]).
 
